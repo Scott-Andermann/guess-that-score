@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import { key } from './key';
 import logo from './logo.svg';
 import './App.css';
 import apiClient from './http-common';
@@ -7,7 +7,7 @@ import Game from './Game/Game';
 import axios from 'axios';
 
 const date = '2022-SEP-03';
-const key = '?key=f20f8f675eeb4d6ba5c4bc93e89c4ad2';
+
 const url = `https://api.sportsdata.io/v3/cfb/scores/json/GamesByDate/${date}?key=${key}`;
 
 function App() {
