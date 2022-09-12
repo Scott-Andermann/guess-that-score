@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import TeamElement from "./TeamElement";
+import Score from "./Score";
 
-const Game = ({ game, logos }) => {
+const Game = ({ game, logos, score, homeGuess, setHomeGuess, awayGuess, setAwayGuess }) => {
   const [homeLogo, setHomeLogo] = useState("");
   const [awayLogo, setAwayLogo] = useState("");
+  
 
   const getLogo = (id) => {
     const team = logos.find((logo) => logo.TeamID === id);
@@ -17,20 +20,11 @@ const Game = ({ game, logos }) => {
   }, [logos, game]);
 
   return (
-    <div style={{ border: "1px solid black", display: "flex" }}>
-      <div style={{ width: "400px", height: "400px" }}>
-        <h2>{game.AwayTeamName}</h2>
-        {awayLogo !== "" && (
-          <img src={awayLogo} style={{ width: "40%", height: "40%" }} />
-        )}
-        <h3>{game.AwayTeamScore}</h3>
-      </div>
-      <div style={{ width: "400px", height: "400px" }}>
-        <h2>{game.HomeTeamName}</h2>
-        {homeLogo !== "" && (
-          <img src={homeLogo} style={{ width: "40%", height: "40%" }} />
-        )}
-        <h3>{game.HomeTeamScore}</h3>
+    <div style={{ border: "1px solid black" }}>
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <TeamElement game={game} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess}/>
+        <h2>VS</h2>
+        <TeamElement game={game} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess}/>  
       </div>
     </div>
   );

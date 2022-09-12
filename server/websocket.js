@@ -44,19 +44,22 @@ var users = {};
 let time = 0;
 let gameIndex = 0;
 let gamesList = [];
+let score = null;
+let topUser = '';
+
+
+const generateUniqueId = () => {
+  const s4 = () =>
+  Math.floor((1 + Math.random()) * 0x10000)
+  .toString(16)
+  .substring(1);
+  return s4() + "-" + s4() + "-" + s4();
+};
 
 const setGameIndex = () => {
   gameIndex = Math.floor(Math.random() * gamesList.length);
   time = 20;
 }
-
-const generateUniqueId = () => {
-  const s4 = () =>
-    Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  return s4() + "-" + s4() + "-" + s4();
-};
 
 const getFacts = async () => {
     
@@ -65,7 +68,6 @@ const getFacts = async () => {
           const response = await axios(url);
           console.log("response succeeded");
           return response.data;
-          // return callResponse;
       } catch (e) {
           console.log("Error: ", e);
       }
@@ -75,13 +77,19 @@ const getFacts = async () => {
   }
 };
 
+const pullData = async () => {gamesList = await getFacts()}
+pullData();
+
 // push time to update to clients
 setInterval(() => {
   Object.keys(clients).map((client) => {
     clients[client].send(JSON.stringify({type: 'timer', time: time}));
   })
-  time -= 1;
-}, 1000)
+  Object.keys(clients).map((client) => {
+    clients[client].send(JSON.stringify({type: 'score', userName: topUser, score: score}));
+  })
+  time -= 0.5;
+}, 500)
 
 // push new game to clients
 setInterval(() => {
@@ -89,14 +97,16 @@ setInterval(() => {
   Object.keys(clients).map((client) => {
     clients[client].send(JSON.stringify({type: 'gameData', game: gamesList[gameIndex]}));
   })
-  time = 4;
-}, 5000)
+  time = 19;
+  score = null;
+  topUser = '';
+}, 20000)
 
 // update game data via API endpoint
 setInterval(async () => {
   console.log('updating from API')
   gamesList = await getFacts();
-}, 10000)
+}, 300000)
 
 wsServer.on("request", function (request) {
   var userID = generateUniqueId();
@@ -114,25 +124,20 @@ wsServer.on("request", function (request) {
     "connected: " + userID + " in " + Object.getOwnPropertyNames(clients)
   );
 
-  // connection.on("message", function (message) {
-  //   try {
-  //     parsed = JSON.parse(message.utf8Data);
-  //     if (parsed.type === 'timer') {
-  //       console.log(parsed.time);
-  //       Object.keys(clients).map((client) => {
-  //         clients[client].send(JSON.stringify({type: 'timer', post: parsed.time}));
-  //       });
-  //     } else if (parsed.type === 'gameData') {
-  //       console.log(parsed.game.AwayTeam);
-  //       Object.keys(clients).map((client) => {
-  //         clients[client].send(JSON.stringify({type: 'gameData', game: parsed.game}));
-  //       })
-  //     }
-
-  //   } catch (e) {
-  //     console.log('There was something wrong with the message: ' + e)
-  //   }
-  // });
+  connection.on('message', function (message) {
+    try {
+      parsed = JSON.parse(message.utf8Data);
+      if (parsed.type === 'score') {
+        // console.log(parsed.score);
+        if (score === null || score > parsed.score) {
+          score = parsed.score;
+          topUser = parsed.userName
+        }
+      }
+    } catch (e) {
+      console.log('There was something wrong with the message: ' + e);
+    }
+  })
 
   connection.on("close", function (connection) {
     console.log(new Date() + " Peer " + userID + " disconnected.");

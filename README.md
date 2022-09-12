@@ -6,13 +6,13 @@ Currently a work in progress.
 TODO:
 ✔️ Serve single random game to all users
 ✔️ Countdown indicator until next game is served
-- Add game logic
+✔️ Add game logic
 ✔️ Update API call every 5 mins
 - User login
 - Force single guess per user
-- Websocket that pushes closest guess for each game
+✔️ Websocket that pushes closest guess for each game
 - Add off-day functionality - guess score of completed games
-- condense server to single server
+✔️ condense server to single websocket server
 
 Future improvements:
 - Push text notifications to users that opt in during live games
@@ -22,6 +22,5 @@ Future improvements:
 
 To start:
 'npm start' in root directory
-'npm run start:development' in server directory
-'npm run start:websocket' in server directory
+'npm start' in server directory in a separate terminal instance
 
