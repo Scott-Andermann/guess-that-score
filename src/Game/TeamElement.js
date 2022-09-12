@@ -1,6 +1,6 @@
 import React from "react";
 
-const TeamElement = ({game, logo, homeAway, guess, setGuess}) => {
+const TeamElement = ({game, logo, homeAway, guess, setGuess, yourScore}) => {
 
     const onChange = (e) => {
         setGuess(e.target.value);
@@ -13,7 +13,7 @@ const TeamElement = ({game, logo, homeAway, guess, setGuess}) => {
                 <img src={logo} style={{ width: "40%", height: "40%" }} />
             )}
             <input type='number' value={guess} onChange={onChange}></input>
-            <h3>{homeAway ? game.HomeTeamScore : game.AwayTeamScore}</h3>
+            {yourScore >= 0 && typeof(yourScore) == 'number' && <h3>{homeAway ? game.HomeTeamScore : game.AwayTeamScore}</h3>}
         </div>
     )
 }

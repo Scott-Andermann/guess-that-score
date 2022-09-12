@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TeamElement from "./TeamElement";
 import Score from "./Score";
 
-const Game = ({ game, logos, score, homeGuess, setHomeGuess, awayGuess, setAwayGuess }) => {
+const Game = ({ game, logos, yourScore, homeGuess, setHomeGuess, awayGuess, setAwayGuess }) => {
   const [homeLogo, setHomeLogo] = useState("");
   const [awayLogo, setAwayLogo] = useState("");
   
@@ -22,9 +22,9 @@ const Game = ({ game, logos, score, homeGuess, setHomeGuess, awayGuess, setAwayG
   return (
     <div style={{ border: "1px solid black" }}>
       <div style={{display: 'flex', justifyContent: 'center'}}>
-        <TeamElement game={game} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess}/>
+        <TeamElement game={game} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore}/>
         <h2>VS</h2>
-        <TeamElement game={game} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess}/>  
+        <TeamElement game={game} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess} yourScore={yourScore}/>  
       </div>
     </div>
   );

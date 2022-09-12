@@ -33,8 +33,6 @@ function App() {
     let homeDiff = Math.abs(gameData[0].HomeTeamScore - homeGuess);
     let awayDiff = Math.abs(gameData[0].AwayTeamScore - awayGuess);
     let diff = homeDiff + awayDiff;
-    setHomeGuess(0);
-    setAwayGuess(0);
     if (diff < yourBestScore || yourBestScore === null) setYourBestScore(diff);
     sendScoreToServer({userName: userName, score: diff})
     setYourScore(diff);
@@ -49,7 +47,7 @@ function App() {
 
   return (
     <div className="App">
-      <Socket setTimer={setTimer} setGameData={setGameData} setScore={setScore} setTopUser={setTopUser}/>
+      <Socket setTimer={setTimer} setGameData={setGameData} setScore={setScore} setTopUser={setTopUser} setHomeGuess={setHomeGuess} setAwayGuess={setAwayGuess}/>
       <h2>Enter User Name: </h2>
       <input value={userName} onChange={(e) => setUserName(e.target.value)}></input>
         {gameData.length > 0 ?
@@ -59,7 +57,8 @@ function App() {
           homeGuess={homeGuess}
           setHomeGuess={setHomeGuess}
           awayGuess={awayGuess}
-          setAwayGuess={setAwayGuess} />) :
+          setAwayGuess={setAwayGuess} 
+          yourScore={yourScore}/>) :
           timer > 0 && <h2>The next game will begin soon</h2>}
       <button onClick={onClick}>Submit</button>
           <h1>Time remaining in game: {timer} seconds</h1>
