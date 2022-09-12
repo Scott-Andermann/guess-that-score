@@ -3,11 +3,36 @@ const axios = require("axios");
 const configKeys = require("../config/configKeys.json");
 const config = require("../config/config.json")
 const dummyData = require('../dummyData.json')
+var W3CWebSocket = require("websocket").w3cwebsocket;
 
 // Change to true for live data
 let develop = false;    
 if (config[process.env.NODE_ENV].port == 4000){
     develop = true;
+}
+let time = '5:00';
+
+const client = new W3CWebSocket('ws://localhost:8080')
+
+client.onerror = function(e) {
+    console.log('connection error:', e)
+}
+client.onopen = function() {
+    console.log('Websocket client connected');
+
+    function sendTime() {
+        client.send(JSON.stringify({type: 'timer', time: time}))
+        console.log('sending current time: ', time)
+        setTimeout(sendTime, 1000);
+    }
+
+    function sendGame() {
+        client.send(JSON.stringify({type: 'gameData', game1: 'game', game2: 'game2'}))
+        console.log('send updated game data')
+        setTimeout(sendGame, 5000);
+    }
+    sendTime(time);
+    sendGame();
 }
 
 const buildDate = () => {
@@ -56,6 +81,8 @@ const updateData = async () => {
 // the following two functions serve a single random game for that day
 const setGameIndex = () => {
     gameIndex = Math.floor(Math.random() * gamesList.length);
+    // const JSON = {userName: 'user', message: 'message'}
+    // client.send(JSON.stringify({type: 'message', userName: 'user', message: 'message'}))
 }
 
 const sendGame = (res) => {
@@ -69,6 +96,6 @@ module.exports = async (req, res) => {
         init = false;
     }
     setInterval(updateData, 300000);
-    setInterval(setGameIndex, 60000);
+    setInterval(setGameIndex, 3000);
     sendGame(res);
 };

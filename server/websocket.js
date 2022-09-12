@@ -1,7 +1,7 @@
 const webSocketServer = require("websocket").server;
 const http = require("http");
 const { env } = require("process");
-const webSocketServerPort = process.env.PORT || 8000;
+const webSocketServerPort = process.env.PORT || 8080;
 
 const server = http.createServer();
 server.listen(webSocketServerPort, () =>
@@ -50,24 +50,17 @@ wsServer.on("request", function (request) {
   );
 
   connection.on("message", function (message) {
-    console.log(users);
-    // console.log(connection)
-    // console.log("this is a server message");
     try {
       parsed = JSON.parse(message.utf8Data);
-      if (parsed.type === 'message') {
-        console.log(userID + " " + parsed.userName + " " + parsed.message);
+      if (parsed.type === 'timer') {
+        console.log(parsed.time);
         Object.keys(clients).map((client) => {
-          clients[client].send(JSON.stringify({type: 'chat', post: parsed.userName + ': ' + parsed.message}));
+          clients[client].send(JSON.stringify({type: 'timer', post: parsed.time}));
         });
-      } else if (parsed.type === 'userUpdate') {
-        console.log(parsed.userName);
-      // update user list with new name
-        users[userID] = parsed.userName;
-        const userList = [];
-        Object.keys(users).map(key => userList.push(users[key]))
+      } else if (parsed.type === 'gameData') {
+        console.log(parsed);
         Object.keys(clients).map((client) => {
-          clients[client].send(JSON.stringify({type: 'user', users: userList}));
+          clients[client].send(JSON.stringify({type: 'gameData', game1: parsed.game1}));
         })
       }
 
