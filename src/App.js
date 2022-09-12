@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import dummyTeams from './dummyTeams.json';
 import apiClient from "./http-common";
+import axios from "axios";
 import Game from "./Game/Game";
 
-const date = "2022-SEP-03";
 const key = process.env.REACT_APP_API_KEY;
+const develop = process.env.REACT_APP_DEVELOP;
 
-const url = `https://api.sportsdata.io/v3/cfb/scores/json/GamesByDate/${date}?key=${key}`;
+const config ={
+headers: {
+  'Access-Control-Allow-Credentials':true,
+  'Access-Control-Allow-Origin':'https://localhost:4000',
+}
+}
 
 function App() {
   const [gameData, setGameData] = useState([]);
@@ -14,7 +21,7 @@ function App() {
 
   const fetchGameData = async () => {
     try {
-      const response = await apiClient.get(`/GamesByDate/${date}?key=${key}`);
+      const response = await axios.get(`http://localhost:4000/data/games`, config);
       setGameData(response.data);
     } catch (e) {
       console.log("=========================");
@@ -35,12 +42,18 @@ function App() {
   };
 
   useEffect(() => {
-    fetchLogos();
+    console.log('=========================');
+    console.log(develop);
+    
+    if (!develop) {
+      fetchLogos();
+    } else setLogos(dummyTeams)
+
     fetchGameData();
   }, []);
-  console.log("=========================");
-  console.log(logos);
-  console.log("=========================");
+  // console.log("=========================");
+  // console.log(logos);
+  // console.log("=========================");
 
   return (
     <div className="App">

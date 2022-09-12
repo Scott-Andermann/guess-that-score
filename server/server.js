@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const config = require("./config/config.json");
 const middleware = require("./routes");
@@ -7,17 +8,11 @@ const middleware = require("./routes");
 const env = process.env.NODE_ENV;
 const configuration = config[env];
 
-app.use("/cat", middleware);
+// Need to figure out cors so that the server cannot be compromised
+app.use(cors(false))
+app.use("/data", middleware);
 
 app.get("/", async (req, res) => {
-  // try {
-  //     axios.get("https://api.neoscan.io/api/main_net/v1/get_all_nodes")
-  //     .then(data => res.status(200).send(data))
-  //     .catch(err => res.send(err));
-  // }
-  // catch (err) {
-  //     console.log(err)
-  // }
   res.send(`port is: ${configuration.port}`);
 });
 
