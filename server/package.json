@@ -5,9 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:development": "cross-env NODE_ENV=development KEY=key nodemon server.js",
-    "start:websocket": "nodemon websocket.js",
-    "start:production": "cross-env NODE_ENV=production KEY=key nodemon server.js"
+    "start": "cross-env KEY=key nodemon websocket.js"
   },
   "author": "",
   "license": "ISC",

@@ -11,11 +11,11 @@ const Socket = ({setTimer, setGameData}) => {
         };
         client.onmessage = (message) => {
             const parsed = JSON.parse(message.data);
-            // console.log(parsed);
-            if (parsed.type === 'timer') setTimer(parsed.post)
+            console.log(parsed);
+            if (parsed.type === 'timer') setTimer(parsed.time)
             if (parsed.type === 'gameData') setGameData([parsed.game])
         }
-    })
+    }, [])
 
     return (
         <></>
