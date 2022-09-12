@@ -1,4 +1,3 @@
-import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 import React, { useEffect } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -8,7 +7,7 @@ export const sendScoreToServer = ({score, userName}) => {
     client.send(JSON.stringify({type: 'score', userName: userName, score: score}));
 }
 
-const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess}) => {
+const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled}) => {
 
     useEffect(() => {
         client.onopen = () => {
@@ -22,6 +21,7 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
                 setGameData([parsed.game])
                 setHomeGuess(0);
                 setAwayGuess(0);
+                setDisabled(false);
             }
             if (parsed.type === 'score') {
                 setTopUser(parsed.userName);
