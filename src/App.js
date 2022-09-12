@@ -41,14 +41,10 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    console.log('=========================');
-    console.log(develop);
-    
+  useEffect(() => {    
     if (!develop) {
       fetchLogos();
     } else setLogos(dummyTeams)
-
     fetchGameData();
   }, []);
   // console.log("=========================");
