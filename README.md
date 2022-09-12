@@ -12,8 +12,16 @@ TODO:
 - Force single guess per user
 - Websocket that pushes closest guess for each game
 - Add off-day functionality - guess score of completed games
+- condense server to single server
 
 Future improvements:
 - Push text notifications to users that opt in during live games
 - Improve styling
 - User Login and performance tracking
+
+
+To start:
+'npm start' in root directory
+'npm run start:development' in server directory
+'npm run start:websocket' in server directory
+
