@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV;
 const configuration = config[env];
 
 // Need to figure out cors so that the server cannot be compromised
-app.use(cors(false))
+app.use(cors({origin: 'http://localhost:3000'}))
 app.use("/data", middleware);
 
 app.get("/", async (req, res) => {
