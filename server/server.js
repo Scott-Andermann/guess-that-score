@@ -10,7 +10,6 @@ const env = process.env.NODE_ENV;
 const configuration = config[env];
 
 
-
 app.use(cors({origin: 'http://localhost:3000'}))
 app.use("/data", middleware);
 
@@ -25,3 +24,4 @@ app.get("*", (req, res) => {
 app.listen(configuration.port, () => {
   console.log(`Server running on port ${configuration.port}`);
 });
+

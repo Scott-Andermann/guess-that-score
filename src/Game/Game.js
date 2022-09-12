@@ -14,7 +14,7 @@ const Game = ({ game, logos }) => {
   useEffect(() => {
     setHomeLogo(getLogo(game.HomeTeamID));
     setAwayLogo(getLogo(game.AwayTeamID));
-  }, [logos]);
+  }, [logos, game]);
 
   return (
     <div style={{ border: "1px solid black", display: "flex" }}>
@@ -32,7 +32,6 @@ const Game = ({ game, logos }) => {
         )}
         <h3>{game.HomeTeamScore}</h3>
       </div>
-      <h3>{game.PointSpread}</h3>
     </div>
   );
 };

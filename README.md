@@ -4,9 +4,10 @@ Guess That Score is a game that my friends and I play during college football se
 
 Currently a work in progress.
 TODO:
-- Serve single random game to all users
-- Countdown indicator until next game is served
-- Update API call every 5 mins
+✔️ Serve single random game to all users
+✔️ Countdown indicator until next game is served
+- Add game logic
+✔️ Update API call every 5 mins
 - User login
 - Force single guess per user
 - Websocket that pushes closest guess for each game

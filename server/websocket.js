@@ -49,6 +49,9 @@ wsServer.on("request", function (request) {
     "connected: " + userID + " in " + Object.getOwnPropertyNames(clients)
   );
 
+  let parsed;
+  console.log(parsed);
+  
   connection.on("message", function (message) {
     try {
       parsed = JSON.parse(message.utf8Data);
@@ -58,9 +61,9 @@ wsServer.on("request", function (request) {
           clients[client].send(JSON.stringify({type: 'timer', post: parsed.time}));
         });
       } else if (parsed.type === 'gameData') {
-        console.log(parsed);
+        console.log(parsed.game.AwayTeam);
         Object.keys(clients).map((client) => {
-          clients[client].send(JSON.stringify({type: 'gameData', game1: parsed.game1}));
+          clients[client].send(JSON.stringify({type: 'gameData', game: parsed.game}));
         })
       }
 
