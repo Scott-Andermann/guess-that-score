@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket('ws://localhost:8080');
+const client = new W3CWebSocket('wss://guess-that-score.herokuapp.com');
+
+// const client = new W3CWebSocket('ws://localhost:8080');
 
 export const sendScoreToServer = ({score, userName}) => {
     client.send(JSON.stringify({type: 'score', userName: userName, score: score}));

@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env KEY=key nodemon websocket.js"
+    "start:development": "cross-env KEY=key nodemon websocket.js",
+    "start": "node websocket.js"
   },
   "author": "",
   "license": "ISC",
