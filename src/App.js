@@ -57,8 +57,12 @@ function App() {
           setAwayGuess={setAwayGuess}
           yourScore={yourScore} />) :
         timer > 0 && <h2>The next round will begin soon</h2>}
-      <button onClick={onClick} disabled={disabled}>Submit</button>
-      <h1>Time remaining in round: {Math.round(timer)} seconds</h1>
+      {gameData.length > 0 ? 
+      <div>
+        <button onClick={onClick} disabled={disabled}>Submit</button>
+        <h1>Time remaining in round: {Math.round(timer)} seconds</h1>
+        </div> : 
+        <h1>Please come back later</h1>}
       <Score score={score} topUser={topUser} yourScore={yourScore} yourBestScore={yourBestScore} />
     </div>
   );

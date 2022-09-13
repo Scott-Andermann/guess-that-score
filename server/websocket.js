@@ -2,7 +2,7 @@ const webSocketServer = require("websocket").server;
 const http = require("http");
 const axios = require("axios");
 const { env } = require("process");
-// const configKeys = require("./config/configKeys.json");
+const configKeys = require("./config/configKeys.json");
 const config = require("./config/config.json")
 const dummyData = require('./dummyData.json')
 
@@ -48,7 +48,7 @@ const clients = {};
 var users = {};
 let time = 0;
 let gameIndex = 0;
-let gamesList = [];
+let gamesList = dummyData;
 let score = null;
 let topUser = '';
 
@@ -68,22 +68,22 @@ const setGameIndex = () => {
 
 const getFacts = async () => {
     
-  if (!develop) {
-      try {
-          const response = await axios(url);
-          console.log("response succeeded");
-          return response.data;
-      } catch (e) {
-          console.log("Error: ", e);
-      }
-  }
-  else {
-      return dummyData;
-  }
+  // if (!develop) {
+  //     try {
+  //         const response = await axios(url);
+  //         console.log("response succeeded");
+  //         console.log(response);
+  //         return response.data;
+  //     } catch (e) {
+  //         console.log("Error: ", e);
+  //     }
+  // }
+  
+  return dummyData;
 };
 
-const pullData = async () => {gamesList = await getFacts()}
-pullData();
+// const pullData = async () => {gamesList = await getFacts()}
+// pullData();
 
 // push time to update to clients
 setInterval(() => {
@@ -98,14 +98,20 @@ setInterval(() => {
 
 // push new game to clients
 setInterval(() => {
+  console.log(gamesList.length);
   setGameIndex();
+  if (gamesList.length === 0) {
+    Object.keys(clients).map((client) => {
+      clients[client].send(JSON.stringify({type: 'gameData', game: []}));
+    })
+  }
   Object.keys(clients).map((client) => {
     clients[client].send(JSON.stringify({type: 'gameData', game: gamesList[gameIndex]}));
   })
   time = 19;
   score = null;
   topUser = '';
-}, 20000)
+}, 5000)
 
 // update game data via API endpoint
 setInterval(async () => {
