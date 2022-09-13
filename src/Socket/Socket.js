@@ -30,7 +30,7 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
                 setScore(parsed.score)
             }
         }
-    }, [])
+    }, [setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled])
 
     return (
         <></>
