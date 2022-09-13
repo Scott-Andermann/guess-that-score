@@ -2,7 +2,7 @@ const webSocketServer = require("websocket").server;
 const http = require("http");
 const axios = require("axios");
 const { env } = require("process");
-const configKeys = require("./config/configKeys.json");
+// const configKeys = require("./config/configKeys.json");
 const config = require("./config/config.json")
 const dummyData = require('./dummyData.json')
 
@@ -78,7 +78,7 @@ const getFacts = async () => {
   //         console.log("Error: ", e);
   //     }
   // }
-  
+
   return dummyData;
 };
 
