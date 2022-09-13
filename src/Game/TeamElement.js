@@ -7,13 +7,13 @@ const TeamElement = ({game, logo, homeAway, guess, setGuess, yourScore}) => {
     }
 
     return (
-        <div style={{ width: "400px", height: "400px" }}>
+        <div className='team-wrapper'>
             <h2>{homeAway ? game.HomeTeamName : game.AwayTeamName}</h2>
             {logo !== "" && (
-                <img src={logo} style={{ width: "40%", height: "40%" }} alt={`${homeAway ? game.HomeTeamName : game.AwayTeamName} logo`} />
-            )}
-            <input type='number' value={guess} onChange={onChange}></input>
-            {yourScore >= 0 && typeof(yourScore) == 'number' && <h3>{homeAway ? game.HomeTeamScore : game.AwayTeamScore}</h3>}
+                <img src={logo} style={{ width: "40%"}} alt={`${homeAway ? game.HomeTeamName : game.AwayTeamName} logo`} />
+                )}
+                <input className='score-input' type='number' value={guess} onChange={onChange}></input>
+            {yourScore >= 0 && typeof(yourScore) == 'number' ? <h3 className='score-actual'>{homeAway ? game.HomeTeamScore : game.AwayTeamScore}</h3> : <h3 className='score-actual'>--</h3>}
         </div>
     )
 }

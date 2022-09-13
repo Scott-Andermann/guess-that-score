@@ -1,0 +1,45 @@
+
+  
+  #countdown {
+    position: relative;
+    margin: auto;
+    height: 80px;
+    width: 80px;
+    text-align: center;
+    font-family: 'JetBrains Mono', 'Courier New'
+  }
+  
+  #countdown-number {
+    color: black;
+    display: inline-block;
+    font-size: 2rem;
+    line-height: 80px;
+  }
+  
+  svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+  }
+  
+  svg circle {
+    stroke-dasharray: 226px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 4px;
+    stroke: black;
+    fill: none;
+    animation: countdown 20s linear infinite forwards;
+  }
+  
+  @keyframes countdown {
+    from {
+      stroke-dashoffset: 0px;
+    }
+    to {
+      stroke-dashoffset: 226px;
+    }
+  }

@@ -67,7 +67,8 @@ const setGameIndex = () => {
 }
 
 const getFacts = async () => {
-    
+
+  // uncomment when using live data and bugs are worked out for off days
   // if (!develop) {
   //     try {
   //         const response = await axios(url);

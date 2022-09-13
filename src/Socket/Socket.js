@@ -21,9 +21,9 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
             if (parsed.type === 'timer') setTimer(parsed.time)
             if (parsed.type === 'gameData') {
                 console.log(parsed.game)
-                setGameData([parsed.game])
+                setGameData(parsed.game)
                 if (parsed.game === undefined) {
-                    setGameData([])
+                    setGameData(['none'])
                 }
                 setHomeGuess(0);
                 setAwayGuess(0);
