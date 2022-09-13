@@ -8,9 +8,15 @@ const dummyData = require('./dummyData.json')
 
 const webSocketServerPort = process.env.PORT || 8080;
 
+let keyConfig;
+
 let develop = false;    
 if (webSocketServerPort == 8080){
-    develop = true;
+  const key = process.env.KEY;
+  keyConfig = configKeys[key];
+  develop = true;
+} else {
+  keyConfig = {key: process.env.KEY}
 }
 
 //initiate websocket serer
@@ -33,8 +39,7 @@ const buildDate = () => {
 }
 
 const date = buildDate();
-const key = process.env.KEY;
-const keyConfig = configKeys[key];
+
 let init = true;
 
 const url = `https://api.sportsdata.io/v3/cfb/scores/json/GamesByDate/${date}?key=${keyConfig.key}`;
