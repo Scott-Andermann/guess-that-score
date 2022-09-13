@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import dummyTeams from './dummyTeams.json';
-import Game from "./Game/Game";
 import Socket, { sendScoreToServer } from "./Socket/Socket";
 import Score from "./Game/Score";
 import Timer from "./Timer/Timer";
