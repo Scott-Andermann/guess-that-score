@@ -111,7 +111,7 @@ setInterval(() => {
   time = 19;
   score = null;
   topUser = '';
-}, 5000)
+}, 20000)
 
 // update game data via API endpoint
 setInterval(async () => {
