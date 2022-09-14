@@ -61,23 +61,28 @@ function App() {
         setAwayGuess={setAwayGuess}
         setDisabled={setDisabled}
       />
-      <h2>Enter your User Name: </h2>
-      <input value={userName} onChange={(e) => setUserName(e.target.value)}></input>
+      <h2 className='team-name'>Enter your Username: </h2>
+      <input className='username-input' value={userName} onChange={(e) => setUserName(e.target.value)} tabIndex='1'></input>
 
       <div className="scoreboard-container">
 
         <div className='scoreboard-wrapper'>
-          {gameData && gameData !== 'none' && <TeamElement game={gameData} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore} disabled={disabled} />}
+          {gameData && gameData !== 'none' && 
+            <TeamElement game={gameData} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore} disabled={disabled} />
+          }
           <div className='title-wrapper'>
             <TitleImage />
             {gameData && gameData !== 'none' &&
               <div>
                 <Timer timer={timer} />
                 <TimeRemaining gameData={gameData} />
-                <button onClick={onClick} disabled={disabled}>Submit Guesses</button>
-              </div>}
+                <button onClick={onClick} disabled={disabled} tabIndex='4' className='submit-button'>Submit Guesses</button>
+              </div>
+              }
           </div>
-          {gameData && gameData !== 'none' && <TeamElement game={gameData} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess} yourScore={yourScore} disabled={disabled} />}
+          {gameData && gameData !== 'none' && 
+            <TeamElement game={gameData} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess} yourScore={yourScore} disabled={disabled} />
+          }
         </div>
       </div>
       <Score score={score} topUser={topUser} yourScore={yourScore} yourBestScore={yourBestScore} />

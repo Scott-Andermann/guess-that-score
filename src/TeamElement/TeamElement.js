@@ -13,12 +13,12 @@ const TeamElement = ({game, logo, homeAway, guess, setGuess, yourScore, disabled
     return (
         <div className='team-wrapper'>
             <div className='team-title'>
-            <h2>{homeAway ? game.HomeTeamName : game.AwayTeamName}</h2>
+            <h2 className='team-name'>{homeAway ? game.HomeTeamName : game.AwayTeamName}</h2>
             </div>
             {logo !== "" && (
                 <img className='team-image' src={logo} alt={`${homeAway ? game.HomeTeamName : game.AwayTeamName} logo`} />
                 )}
-                <input className='score-input' type='number' value={guess} onChange={onChange} disabled={disabled} min='0' max='99'></input>
+                <input className='score-input' type='number' value={guess} onChange={onChange} disabled={disabled} tabIndex='2'></input>
             {yourScore >= 0 && typeof(yourScore) == 'number' ? 
             <div className='score-actual-wrapper'>
                 <h3 className='score-actual'>{teamScore}</h3>
