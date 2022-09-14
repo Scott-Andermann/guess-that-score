@@ -11,7 +11,7 @@ const Score = ({score, yourScore, topUser}) => {
             </div>
             <div>
                 <h2 className='score-header'>Your Score</h2>
-                {yourScore !== null ? <h3>{score}</h3> : <h3>--</h3> }
+                {yourScore !== null ? <h3>{yourScore}</h3> : <h3>--</h3> }
             </div>
         </div>
     )
