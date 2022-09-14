@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket('wss://guess-that-score.herokuapp.com');
+// const client = new W3CWebSocket('wss://guess-that-score.herokuapp.com');
 
-// const client = new W3CWebSocket('ws://localhost:8080');
+const client = new W3CWebSocket('ws://localhost:8080');
 
 export const sendScoreToServer = ({score, userName}) => {
     client.send(JSON.stringify({type: 'score', userName: userName, score: score}));
@@ -17,10 +17,10 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
         };
         client.onmessage = (message) => {
             const parsed = JSON.parse(message.data);
-            // console.log(parsed);
+            console.log(parsed);
             if (parsed.type === 'timer') setTimer(parsed.time)
             if (parsed.type === 'gameData') {
-                console.log(parsed.game)
+                // console.log(parsed.game)
                 setGameData(parsed.game)
                 if (parsed.game === undefined) {
                     setGameData(['none'])

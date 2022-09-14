@@ -24,20 +24,26 @@ function App() {
   const [awayLogo, setAwayLogo] = useState("");
 
   useEffect(() => {
-    const getLogo = (id) => {
-      const team = logos.find((logo) => logo.TeamID === id);
-      const url = team.TeamLogoUrl;
+    const getLogo = (school) => {
+      const team = logos.find((logo) => logo.School === school);
+      let url;
+      try {
+        url = team.TeamLogoUrl;
+      } catch (e) {
+        console.log('Error: ', e)
+        url = 'https://www.ncaa.org/images/2021/7/14/NCAA_Disk.jpg'
+      }
       return url;
     };
     if (gameData !== 'none') {
-      setHomeLogo(getLogo(gameData.HomeTeamID));
-      setAwayLogo(getLogo(gameData.AwayTeamID));
+      setHomeLogo(getLogo(gameData.homeTeam));
+      setAwayLogo(getLogo(gameData.awayTeam));
     }
   }, [logos, gameData]);
 
   const onClick = () => {
-    let homeDiff = Math.abs(gameData.HomeTeamScore - homeGuess);
-    let awayDiff = Math.abs(gameData.AwayTeamScore - awayGuess);
+    let homeDiff = Math.abs(gameData.homePoints - homeGuess);
+    let awayDiff = Math.abs(gameData.awayPoints - awayGuess);
     let diff = homeDiff + awayDiff;
     if (diff < yourBestScore || yourBestScore === null) setYourBestScore(diff);
     sendScoreToServer({ userName: userName, score: diff })

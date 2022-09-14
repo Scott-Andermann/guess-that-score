@@ -1,5 +1,6 @@
 const webSocketServer = require("websocket").server;
 const http = require("http");
+const cfb = require('cfb.js')
 const axios = require("axios");
 const { env } = require("process");
 // const configKeys = require("./config/configKeys.json");
@@ -12,8 +13,8 @@ let keyConfig;
 
 let develop = false;    
 if (webSocketServerPort == 8080){
-  const key = process.env.KEY;
-  keyConfig = configKeys[key];
+  // const key = process.env.KEY;
+  // keyConfig = configKeys[key];
   develop = true;
 } else {
   keyConfig = {key: process.env.KEY}
@@ -29,20 +30,21 @@ const wsServer = new webSocketServer({
   httpServer: server,
 });
 
-// create date string in proper format
-const buildDate = () => {
-  const monthNames =["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-  let date = new Date().toISOString().replace(/T/, ' ').slice(0,10)
-  let month = Number(date.slice(5,7)) - 1 
-  let returnDate = date.slice(0,5) + monthNames[month] + date.slice(7)
-  return returnDate;
+const defaultClient = cfb.ApiClient.instance;
+
+const ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
+ApiKeyAuth.apiKey = `Bearer ${keyConfig}`;
+
+var api = new cfb.GamesApi();
+
+// need to automatically update the week/year
+let year = 2022;
+let week = 2;
+let opts = {
+    year: year,
+    week: week
 }
-
-const date = buildDate();
-
-let init = true;
-
-const url = `https://api.sportsdata.io/v3/cfb/scores/json/GamesByDate/${date}?key=${keyConfig.key}`;
+const conferences = ['American Athletic', 'Sun Belt', 'ACC', 'SEC', 'Mid-American', 'Conference USA', 'FBS Independents', 'Big 12', 'Big Ten', 'Pac-12', 'Mountain West']
 
 const clients = {};
 var users = {};
@@ -69,16 +71,15 @@ const setGameIndex = () => {
 const getFacts = async () => {
 
   // uncomment when using live data and bugs are worked out for off days
-  // if (!develop) {
-  //     try {
-  //         const response = await axios(url);
-  //         console.log("response succeeded");
-  //         console.log(response);
-  //         return response.data;
-  //     } catch (e) {
-  //         console.log("Error: ", e);
-  //     }
-  // }
+  if (develop) {
+      try {
+          games = await api.getGames(year, opts);
+          result = games.filter(game => conferences.includes(game.homeConference))
+          return result;
+      } catch (e) {
+          console.log("Error: ", e);
+      }
+  }
 
   return dummyData;
 };
@@ -99,8 +100,8 @@ setInterval(() => {
 
 // push new game to clients
 setInterval(() => {
-  console.log(gamesList.length);
   setGameIndex();
+  console.log(gamesList[gameIndex]);
   if (gamesList.length === 0) {
     Object.keys(clients).map((client) => {
       clients[client].send(JSON.stringify({type: 'gameData', game: []}));

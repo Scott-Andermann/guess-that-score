@@ -1,8 +1,8 @@
 import React from "react";
 import './Score.css';
 
-const Score = ({score, yourScore, yourBestScore, topUser}) => {
-    console.log(score);
+const Score = ({score, yourScore, topUser}) => {
+    // console.log(score);
     return (
         <div className='score-wrapper'>
             <div>
