@@ -92,6 +92,7 @@ function App() {
         </div>
       </div>
       <Score score={score} topUser={topUser} yourScore={yourScore} yourBestScore={yourBestScore} />
+      <footer>Built by <a href="https://github.com/Scott-Andermann">Scott</a> - Powered by <a href="https://collegefootballdata.com/">CFBD</a></footer>
     </div>
   );
 }
