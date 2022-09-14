@@ -11,35 +11,35 @@ function Timer({updateTimer}) {
     const [animation, setAnimation] = useState(0);
 
 
-    function timerAnimation(time) {
-        // recursive function used to get accurate timing from initial click
-        if (startTime === undefined) {
-            // set starting time - this is not set as a state of the page though
-            startTime = time;
-        }
-        const elapsed = time - startTime;
-        const upperLimit = 20000;
-
-        if (prevTime !== time && !done) {
-            const count = Math.min(elapsed, upperLimit);
-            setTimer(count);
-            if (count === upperLimit) {
-                done = true;
-                startTime = undefined;
-            }
-        }
-
-        if (elapsed < 500) {
-            prevTime = time;
-            if (!done) {
-                window.requestAnimationFrame(timerAnimation);
-            }
-        }
-    }
-
+    
     useEffect(() => {
+        function timerAnimation(time) {
+            // recursive function used to get accurate timing from initial click
+            if (startTime === undefined) {
+                // set starting time - this is not set as a state of the page though
+                startTime = time;
+            }
+            const elapsed = time - startTime;
+            const upperLimit = 20000;
+    
+            if (prevTime !== time && !done) {
+                const count = Math.min(elapsed, upperLimit);
+                setTimer(count);
+                if (count === upperLimit) {
+                    done = true;
+                    startTime = undefined;
+                }
+            }
+    
+            if (elapsed < 500) {
+                prevTime = time;
+                if (!done) {
+                    window.requestAnimationFrame(timerAnimation);
+                }
+            }
+        }
         // console.log(updateTimer)
-            window.requestAnimationFrame(timerAnimation)
+        window.requestAnimationFrame(timerAnimation)
         if (updateTimer >= 19 && timer > 10) {
             console.log('starting timer')
             done = false;
