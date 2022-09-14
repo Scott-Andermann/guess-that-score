@@ -80,7 +80,7 @@ function App() {
             <TitleImage />
             {gameData && gameData !== 'none' &&
               <div>
-                <Timer timer={timer} />
+                <Timer updateTimer={timer} />
                 <TimeRemaining gameData={gameData} />
                 <button onClick={onClick} disabled={disabled} tabIndex='4' className='submit-button'>Submit Guesses</button>
               </div>

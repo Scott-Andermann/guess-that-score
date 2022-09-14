@@ -1,45 +1,55 @@
+.container {
+  display: block;
+  position: relative;
+  text-align: center;
+}
 
-  
-  #countdown {
-    position: relative;
-    margin: auto;
-    height: 80px;
-    width: 80px;
-    text-align: center;
-    font-family: 'JetBrains Mono', 'Courier New'
+h2 {
+  color: white;
+}
+
+@property --progress {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+
+.outer {
+  height: 140px;
+  width: 140px;
+  --color: darkblue;
+  inset: 0;
+  border-radius: 50%;
+  margin: auto;
+  background: conic-gradient(var(--color) var(--progress), rgb(204, 202, 202) 0%);
+  animation-fill-mode: forwards;
+}
+
+.inner {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: white;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: conic-gradient(var(--color) var(--progress), gray 0%);
+}
+
+.outer[timercircle='1'] {
+  animation: timercircle 20s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes timercircle {
+  50% {
+      --progress: 50%;
   }
-  
-  #countdown-number {
-    color: black;
-    display: inline-block;
-    font-size: 2rem;
-    line-height: 80px;
+
+  100% {
+      --progress: 100%;
   }
-  
-  svg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 80px;
-    height: 80px;
-    transform: rotateY(-180deg) rotateZ(-90deg);
-  }
-  
-  svg circle {
-    stroke-dasharray: 226px;
-    stroke-dashoffset: 0px;
-    stroke-linecap: round;
-    stroke-width: 4px;
-    stroke: black;
-    fill: none;
-    animation: countdown 20s linear infinite forwards;
-  }
-  
-  @keyframes countdown {
-    from {
-      stroke-dashoffset: 0px;
-    }
-    to {
-      stroke-dashoffset: 226px;
-    }
-  }
+}
