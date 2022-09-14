@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import dummyTeams from './dummyTeams.json';
 import Socket, { sendScoreToServer } from "./Socket/Socket";
-import Score from "./Game/Score";
+import Score from "./Score/Score";
 import Timer from "./Timer/Timer";
-import TeamElement from "./Game/TeamElement";
-import TimeRemaining from "./Game/TimeRemaining";
+import TeamElement from "./TeamElement/TeamElement";
+import TimeRemaining from "./TimeRemaining/TimeRemaining";
+import TitleImage from "./TitleImage/TitleImage";
 
 function App() {
   const [gameData, setGameData] = useState('none');
@@ -60,39 +61,25 @@ function App() {
         setAwayGuess={setAwayGuess}
         setDisabled={setDisabled}
       />
-      <h2>Enter User Name: </h2>
+      <h2>Enter your User Name: </h2>
       <input value={userName} onChange={(e) => setUserName(e.target.value)}></input>
 
+      <div className="scoreboard-container">
 
-      <div className='scoreboard-wrapper'>
-        {gameData && gameData !== 'none' && <TeamElement game={gameData} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore} />}
-        <div>
-          {gameData && gameData !== 'none' &&
-            <div>
-              <button onClick={onClick} disabled={disabled}>Submit</button>
-              <Timer timer={timer} />
-              <TimeRemaining gameData={gameData} />
-            </div>}
-          <div className='title'>
-            <img src="https://fontmeme.com/permalink/220913/63d5c628d0c6d9378952753d2843c49f.png" alt="the-price-is-right-font https://fontmeme.com/the-price-is-right-font/" border="0" />
-            <img src="https://fontmeme.com/permalink/220913/90d0faa40143d7b35c3911f77e7ca65b.png" alt="the-price-is-right-font https://fontmeme.com/the-price-is-right-font/" border="0" />
-            <img src="https://fontmeme.com/permalink/220913/106ac778456e67f8595b2ee386c440f8.png" alt="the-price-is-right-font https://fontmeme.com/the-price-is-right-font/" border="0" />
+        <div className='scoreboard-wrapper'>
+          {gameData && gameData !== 'none' && <TeamElement game={gameData} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore} disabled={disabled} />}
+          <div className='title-wrapper'>
+            <TitleImage />
+            {gameData && gameData !== 'none' &&
+              <div>
+                <Timer timer={timer} />
+                <TimeRemaining gameData={gameData} />
+                <button onClick={onClick} disabled={disabled}>Submit Guesses</button>
+              </div>}
           </div>
+          {gameData && gameData !== 'none' && <TeamElement game={gameData} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess} yourScore={yourScore} disabled={disabled} />}
         </div>
-        {gameData && gameData !== 'none' && <TeamElement game={gameData} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess} yourScore={yourScore} />}
       </div>
-
-
-      {/* {gameData && gameData !== 'none' ?
-        <Game key={gameData.gameID}
-          game={gameData}
-          logos={logos}
-          homeGuess={homeGuess}
-          setHomeGuess={setHomeGuess}
-          awayGuess={awayGuess}
-          setAwayGuess={setAwayGuess}
-          yourScore={yourScore} /> :
-        timer > 0 && <h2>The next round will begin soon</h2>} */}
       <Score score={score} topUser={topUser} yourScore={yourScore} yourBestScore={yourBestScore} />
     </div>
   );
