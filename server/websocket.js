@@ -53,6 +53,7 @@ let score = null;
 let topUser = '';
 let gamesList;
 let init = true;
+let dataType;
 
 
 const generateUniqueId = () => {
@@ -94,11 +95,13 @@ const getFacts = async () => {
       // check if games are being played if yes, hit /scoreboard endpoint
       games = await api.getScoreboard({classification: 'fbs'});
       currGames = games.filter(game => game.status !== 'scheduled');
+      dataType = 'fresh';
       // if no games are being played, get last weeks games from /games endpoint with correct week number
       if (currGames.length === 0) {
         games = await api.getGames(year, opts);
         gameData = games.filter(game => conferences.includes(game.homeConference))
         result = buildJSON(gameData)
+        dataType = 'stale';
         return result;
       }
       return currGames;
@@ -135,11 +138,11 @@ setInterval(() => {
   setGameIndex();
   if (gamesList.length === 0) {
     Object.keys(clients).map((client) => {
-      clients[client].send(JSON.stringify({type: 'gameData', game: []}));
+      clients[client].send(JSON.stringify({type: 'gameData', dataType: dataType, game: []}));
     })
   }
   Object.keys(clients).map((client) => {
-    clients[client].send(JSON.stringify({type: 'gameData', game: gamesList[gameIndex]}));
+    clients[client].send(JSON.stringify({type: 'gameData', dataType: dataType, game: gamesList[gameIndex]}));
   })
   time = 19;
   score = null;

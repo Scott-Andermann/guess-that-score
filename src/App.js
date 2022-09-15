@@ -22,12 +22,18 @@ function App() {
   const logos = dummyTeams;
   const [homeLogo, setHomeLogo] = useState("");
   const [awayLogo, setAwayLogo] = useState("");
+  const [dataType, setDataType] = useState('stale');
 
   useEffect(() => {
     const getLogo = (school) => {
       let url;
       try {
-        const team = logos.find((logo) => school.includes(logo.School));
+        let team
+        if (dataType === 'fresh') {
+          team = logos.find((logo) => school.includes(logo.Name) && school.includes(logo.School));
+        } else {
+          team = logos.find((logo) => logo.School === school);
+        }
         url = team.TeamLogoUrl;
       } catch (e) {
         console.log('Error: ', e)
@@ -39,7 +45,7 @@ function App() {
       setHomeLogo(getLogo(gameData.homeTeam.name));
       setAwayLogo(getLogo(gameData.awayTeam.name));
     }
-  }, [logos, gameData]);
+  }, [logos, gameData, dataType]);
 
   const onClick = () => {
     let homeDiff = Math.abs(gameData.homeTeam.points - homeGuess);
@@ -66,6 +72,7 @@ function App() {
         setHomeGuess={setHomeGuess}
         setAwayGuess={setAwayGuess}
         setDisabled={setDisabled}
+        setDataType={setDataType}
       />
       <h2 className='team-name'>Enter your Username: </h2>
       <input className='username-input' value={userName} onChange={(e) => setUserName(e.target.value)} tabIndex='1'></input>

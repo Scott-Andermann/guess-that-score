@@ -9,7 +9,7 @@ export const sendScoreToServer = ({score, userName}) => {
     client.send(JSON.stringify({type: 'score', userName: userName, score: score}));
 }
 
-const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled}) => {
+const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled, setDataType}) => {
 
     useEffect(() => {
         client.onopen = () => {
@@ -21,6 +21,7 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
             if (parsed.type === 'timer') setTimer(parsed.time)
             if (parsed.type === 'gameData') {
                 // console.log(parsed.game)
+                setDataType(parsed.dataType);
                 setGameData(parsed.game)
                 if (parsed.game === undefined) {
                     setGameData(['none'])
@@ -34,7 +35,7 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
                 setScore(parsed.score)
             }
         }
-    }, [setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled])
+    }, [setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled, setDataType])
 
     return (
         <></>
