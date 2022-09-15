@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-h2, p {
+h2, h3, p {
   margin-block: 0;
 }
 
@@ -134,6 +134,7 @@ footer {
 
   .App {
     border-radius: 0;
+    max-height: 100%;
     width: 100vw;
   }
 
@@ -153,5 +154,17 @@ footer {
   }
   .username-input {
     margin-bottom: 0;
+  }
+  .result-flag {
+    position: relative;
+    width: 80%;
+    top: 0;
+    left: o;
+    margin: auto;
+    font-size: 0.75rem;
+  }
+
+  .score-header {
+    font-size: 1.25rem;
   }
 }

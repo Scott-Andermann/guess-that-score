@@ -83,12 +83,12 @@ function App() {
         setDisabled={setDisabled}
         setDataType={setDataType}
       />
-      <h2 className='team-name'>Enter your Username: </h2>
-      <input className='username-input' value={userName} onChange={(e) => setUserName(e.target.value)} tabIndex='1'></input>
       {dataType === 'stale' && 
       <div className='result-flag'>
-        <h3>No live games.  Play on games from week {getWeek()}</h3>
+        No live games.  Play on games from week {getWeek()}
       </div>}
+      <h2 className='team-name'>Enter your Username: </h2>
+      <input className='username-input' value={userName} onChange={(e) => setUserName(e.target.value)} tabIndex='1'></input>
       <div className="scoreboard-container">
         <div className='scoreboard-wrapper'>
           {gameData && gameData !== 'none' && 

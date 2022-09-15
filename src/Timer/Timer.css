@@ -44,6 +44,18 @@ h2 {
   animation-fill-mode: forwards;
 }
 
+@media only screen and (max-width: 500px) {
+  .inner {
+    height: 80px;
+    width: 80px;
+  }
+
+  .outer {
+    height: 90px;
+    width: 90px;
+  }
+}
+
 /* @keyframes timercircle {
   50% {
       --progress: 50%;
