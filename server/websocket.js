@@ -33,7 +33,6 @@ const defaultClient = cfb.ApiClient.instance;
 const ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
 ApiKeyAuth.apiKey = `Bearer ${keyConfig.key}`;
 
-console.log('API key: ', ApiKeyAuth);
 
 var api = new cfb.GamesApi();
 
@@ -121,6 +120,7 @@ const getGames = async () => {
 // push time to update to clients
 setInterval(() => {
   if (init) {
+    console.log('Initial pull from API')
     getGames();
     init = false;
   }
@@ -153,7 +153,7 @@ setInterval(() => {
 setInterval(async () => {
   // console.log('updating from API')
   gamesList = await getFacts();
-}, 300000)
+}, 30000)
 
 wsServer.on("request", function (request) {
   var userID = generateUniqueId();
