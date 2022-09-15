@@ -24,6 +24,15 @@ function App() {
   const [awayLogo, setAwayLogo] = useState("");
   const [dataType, setDataType] = useState('stale');
 
+  const getWeek = () => {
+    let currentDate = new Date();
+    let startDate = new Date(currentDate.getFullYear(), 0, 1);
+    let days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
+  
+    let weekNumber = Math.ceil(days / 7);
+    return (weekNumber - 35); // weeks into year will change based on when season starts
+  }
+
   useEffect(() => {
     const getLogo = (school) => {
       let url;
@@ -76,9 +85,11 @@ function App() {
       />
       <h2 className='team-name'>Enter your Username: </h2>
       <input className='username-input' value={userName} onChange={(e) => setUserName(e.target.value)} tabIndex='1'></input>
-
+      {dataType === 'stale' && 
+      <div className='result-flag'>
+        <h3>No live games.  Play on games from week {getWeek()}</h3>
+      </div>}
       <div className="scoreboard-container">
-
         <div className='scoreboard-wrapper'>
           {gameData && gameData !== 'none' && 
             <TeamElement game={gameData} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore} disabled={disabled} />

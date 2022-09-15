@@ -2,7 +2,7 @@ const webSocketServer = require("websocket").server;
 const http = require("http");
 const cfb = require('cfb.js')
 const { env } = require("process");
-const configKeys = require("./config/configKeys.json"); // comment before deploying
+// const configKeys = require("./config/configKeys.json"); // comment before deploying
 // const dummyData = require('./dummyData.json')
 
 const webSocketServerPort = process.env.PORT || 8080;
@@ -11,8 +11,8 @@ let keyConfig;
 
 let develop = false;
 if (webSocketServerPort == 8080) {
-  const key = process.env.KEY; // comment before deploying
-  keyConfig = configKeys[key]; // comment before deploying
+  // const key = process.env.KEY; // comment before deploying
+  // keyConfig = configKeys[key]; // comment before deploying
   develop = true;
 } else {
   keyConfig = { key: process.env.KEY }
