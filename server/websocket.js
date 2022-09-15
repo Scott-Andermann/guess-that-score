@@ -3,9 +3,7 @@ const http = require("http");
 const cfb = require('cfb.js')
 const { env } = require("process");
 // const configKeys = require("./config/configKeys.json"); // comment before deploying
-const config = require("./config/config.json")
 const dummyData = require('./dummyData.json')
-const buildJSON = require('./buildJSON')
 
 const webSocketServerPort = process.env.PORT || 8080;
 
@@ -71,6 +69,27 @@ const setGameIndex = () => {
   time = 20;
 }
 
+const buildJSON = (gameData) => {
+  let result = []
+  gameData.forEach(element => {
+      obj = {id: element.id, 
+      period: 'Final',
+      clock: null,
+      homeTeam: {
+          name: element.homeTeam,
+          points: element.homePoints
+      },
+      awayTeam: {
+          name: element.awayTeam,
+          points: element.awayPoints
+      }
+  }
+      result.push(obj);
+  });
+
+  return result;
+}
+
 const getFacts = async () => {
   if (develop) {
     try {
@@ -81,7 +100,7 @@ const getFacts = async () => {
       if (currGames.length === 0) {
         games = await api.getGames(year, opts);
         gameData = games.filter(game => conferences.includes(game.homeConference))
-        result = buildJSON.buildJSON(gameData)
+        result = buildJSON(gameData)
         return result;
       }
       return currGames;

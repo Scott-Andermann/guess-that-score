@@ -17,7 +17,7 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
         };
         client.onmessage = (message) => {
             const parsed = JSON.parse(message.data);
-            console.log(parsed);
+            // console.log(parsed);
             if (parsed.type === 'timer') setTimer(parsed.time)
             if (parsed.type === 'gameData') {
                 // console.log(parsed.game)
