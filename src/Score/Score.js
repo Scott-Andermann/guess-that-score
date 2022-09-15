@@ -21,7 +21,7 @@ const Score = ({ score, userName, yourScore }) => {
               <tr
                 className={
                   scoreElement.userName === userName &&
-                  scoreElement.score === userName
+                  scoreElement.score === yourScore
                     ? "highlight"
                     : ""
                 }
