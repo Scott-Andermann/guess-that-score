@@ -25,9 +25,9 @@ function App() {
 
   useEffect(() => {
     const getLogo = (school) => {
+      let url;
       try {
         const team = logos.find((logo) => school.includes(logo.School));
-        let url;
         url = team.TeamLogoUrl;
       } catch (e) {
         console.log('Error: ', e)
