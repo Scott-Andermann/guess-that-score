@@ -3,7 +3,7 @@ const http = require("http");
 const cfb = require('cfb.js')
 const { env } = require("process");
 // const configKeys = require("./config/configKeys.json"); // comment before deploying
-const dummyData = require('./dummyData.json')
+// const dummyData = require('./dummyData.json')
 
 const webSocketServerPort = process.env.PORT || 8080;
 
@@ -90,7 +90,6 @@ const buildJSON = (gameData) => {
 }
 
 const getFacts = async () => {
-  if (develop) {
     try {
       // check if games are being played if yes, hit /scoreboard endpoint
       games = await api.getScoreboard({classification: 'fbs'});
@@ -107,9 +106,7 @@ const getFacts = async () => {
     } catch (e) {
       console.log("Error: ", e);
     }
-  }
   
-  return dummyData;
 };
 
 const getGames = async () => {
