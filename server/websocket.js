@@ -2,20 +2,20 @@ const webSocketServer = require("websocket").server;
 const http = require("http");
 const cfb = require('cfb.js')
 const { env } = require("process");
-// const configKeys = require("./config/configKeys.json"); // comment before deploying
+const configKeys = require("./config/configKeys.json"); // comment before deploying
 // const dummyData = require('./dummyData.json')
 
 const webSocketServerPort = process.env.PORT || 8080;
 
 let keyConfig;
 
-let develop = false;    
-if (webSocketServerPort == 8080){
-  // const key = process.env.KEY; // comment before deploying
-  // keyConfig = configKeys[key]; // comment before deploying
+let develop = false;
+if (webSocketServerPort == 8080) {
+  const key = process.env.KEY; // comment before deploying
+  keyConfig = configKeys[key]; // comment before deploying
   develop = true;
 } else {
-  keyConfig = {key: process.env.KEY}
+  keyConfig = { key: process.env.KEY }
 }
 
 //initiate websocket serer
@@ -37,12 +37,7 @@ ApiKeyAuth.apiKey = `Bearer ${keyConfig.key}`;
 var api = new cfb.GamesApi();
 
 // need to automatically update the week/year
-let year = 2022;
-let week = 2;
-let opts = {
-    year: year,
-    week: week
-}
+
 const conferences = ['American Athletic', 'Sun Belt', 'ACC', 'SEC', 'Mid-American', 'Conference USA', 'FBS Independents', 'Big 12', 'Big Ten', 'Pac-12', 'Mountain West']
 
 const clients = {};
@@ -58,9 +53,9 @@ let dataType;
 
 const generateUniqueId = () => {
   const s4 = () =>
-  Math.floor((1 + Math.random()) * 0x10000)
-  .toString(16)
-  .substring(1);
+    Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
   return s4() + "-" + s4() + "-" + s4();
 };
 
@@ -69,47 +64,63 @@ const setGameIndex = () => {
   time = 20;
 }
 
+const getWeek = () => {
+  currentDate = new Date();
+  startDate = new Date(currentDate.getFullYear(), 0, 1);
+  var days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
+
+  var weekNumber = Math.ceil(days / 7);
+  return (weekNumber - 35); // weeks into year will change based on when season starts
+}
+
 const buildJSON = (gameData) => {
   let result = []
   gameData.forEach(element => {
-      obj = {id: element.id, 
+    obj = {
+      id: element.id,
       period: 'Final',
       clock: null,
       homeTeam: {
-          name: element.homeTeam,
-          points: element.homePoints
+        name: element.homeTeam,
+        points: element.homePoints
       },
       awayTeam: {
-          name: element.awayTeam,
-          points: element.awayPoints
+        name: element.awayTeam,
+        points: element.awayPoints
       }
-  }
-      result.push(obj);
+    }
+    result.push(obj);
   });
 
   return result;
 }
 
 const getFacts = async () => {
-    try {
-      // check if games are being played if yes, hit /scoreboard endpoint
-      games = await api.getScoreboard({classification: 'fbs'});
-      currGames = games.filter(game => game.status !== 'scheduled');
-      dataType = 'fresh';
-      // if no games are being played, get last weeks games from /games endpoint with correct week number
-      if (currGames.length === 0) {
-        games = await api.getGames(year, opts);
-        gameData = games.filter(game => conferences.includes(game.homeConference))
-        result = buildJSON(gameData)
-        dataType = 'stale';
-        return result;
+  try {
+    // check if games are being played if yes, hit /scoreboard endpoint
+    games = await api.getScoreboard({ classification: 'fbs' });
+    currGames = games.filter(game => game.status !== 'scheduled');
+    dataType = 'fresh';
+    // if no games are being played, get last weeks games from /games endpoint with correct week number
+    if (currGames.length === 0) {
+      let year = new Date().getFullYear();
+      let week = getWeek();
+      let opts = {
+        year: year,
+        week: week
       }
-      return currGames;
-
-    } catch (e) {
-      console.log("Error: ", e);
+      games = await api.getGames(year, opts);
+      gameData = games.filter(game => conferences.includes(game.homeConference))
+      result = buildJSON(gameData)
+      dataType = 'stale';
+      return result;
     }
-  
+    return currGames;
+
+  } catch (e) {
+    console.log("Error: ", e);
+  }
+
 };
 
 const getGames = async () => {
@@ -125,12 +136,13 @@ setInterval(() => {
     init = false;
   }
   Object.keys(clients).map((client) => {
-    clients[client].send(JSON.stringify({type: 'timer', time: time}));
+    clients[client].send(JSON.stringify({ type: 'timer', time: time }));
   })
   Object.keys(clients).map((client) => {
-    clients[client].send(JSON.stringify({type: 'score', userName: topUser, score: score}));
+    clients[client].send(JSON.stringify({ type: 'score', userName: topUser, score: score }));
   })
   time -= 0.5;
+  
 }, 500)
 
 // push new game to clients
@@ -138,11 +150,11 @@ setInterval(() => {
   setGameIndex();
   if (gamesList.length === 0) {
     Object.keys(clients).map((client) => {
-      clients[client].send(JSON.stringify({type: 'gameData', dataType: dataType, game: []}));
+      clients[client].send(JSON.stringify({ type: 'gameData', dataType: dataType, game: [] }));
     })
   }
   Object.keys(clients).map((client) => {
-    clients[client].send(JSON.stringify({type: 'gameData', dataType: dataType, game: gamesList[gameIndex]}));
+    clients[client].send(JSON.stringify({ type: 'gameData', dataType: dataType, game: gamesList[gameIndex] }));
   })
   time = 19;
   score = null;
