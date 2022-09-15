@@ -31,7 +31,7 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
                 setDisabled(false);
             }
             if (parsed.type === 'score') {
-                setTopUser(parsed.userName);
+                // setTopUser(parsed.userName);
                 setScore(parsed.score)
             }
         }

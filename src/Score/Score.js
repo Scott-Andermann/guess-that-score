@@ -1,18 +1,26 @@
 import React from "react";
 import './Score.css';
 
-const Score = ({score, yourScore, topUser}) => {
+const Score = ({score, userName}) => {
     // console.log(score);
     return (
         <div className='score-wrapper'>
-            <div style={{marginRight: 0.25 + 'rem'}}>
-                <h2 className='score-header'>Top Score</h2>
-                {score !== null ? <h3>{topUser}: {score}</h3> : <h3>--</h3> }
-            </div>
-            <div style={{marginLeft: 0.25 + 'rem'}}>
-                <h2 className='score-header'>Your Score</h2>
-                {yourScore !== null ? <h3>{yourScore}</h3> : <h3>--</h3> }
-            </div>
+                <h2 className='score-header'>Top Scores</h2>
+                <table className='score-table'>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Username</th>
+                        <th>Score</th>
+                    </tr>
+                    {score.length > 0 && score.sort((a, b) => {return a.score - b.score}).map(scoreElement => 
+                        <tr className={scoreElement.userName === userName ? 'highlight' : ''}>
+                            <td>1</td>
+                            <td>{scoreElement.userName}</td>
+                            <td>{scoreElement.score}</td>
+                        </tr>
+                    )}
+
+                </table>
         </div>
     )
 }

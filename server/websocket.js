@@ -44,7 +44,7 @@ const clients = {};
 var users = {};
 let time = 0;
 let gameIndex = 0;
-let score = null;
+let score = [];
 let topUser = '';
 let gamesList;
 let init = true;
@@ -157,7 +157,7 @@ setInterval(() => {
     clients[client].send(JSON.stringify({ type: 'gameData', dataType: dataType, game: gamesList[gameIndex] }));
   })
   time = 19;
-  score = null;
+  score = [];
   topUser = '';
 }, 21000)
 
@@ -188,10 +188,11 @@ wsServer.on("request", function (request) {
       parsed = JSON.parse(message.utf8Data);
       if (parsed.type === 'score') {
         // console.log(parsed.score);
-        if (score === null || score > parsed.score) {
-          score = parsed.score;
-          topUser = parsed.userName
-        }
+        // if (score === null || score > parsed.score) {
+        //   score = parsed.score;
+        //   topUser = parsed.userName
+        // }
+        score.push({userName: parsed.userName, score: parsed.score})
       }
     } catch (e) {
       console.log('There was something wrong with the message: ' + e);

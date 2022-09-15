@@ -120,6 +120,10 @@ footer {
   border-radius: 3px;
 }
 
+.clock {
+  margin: 0.5rem;
+}
+
 
 @media only screen and (max-width: 800px) {
   .scoreboard-wrapper {
@@ -134,7 +138,6 @@ footer {
 
   .App {
     border-radius: 0;
-    max-height: 100%;
     width: 100vw;
   }
 

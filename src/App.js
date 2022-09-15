@@ -11,9 +11,9 @@ import TitleImage from "./TitleImage/TitleImage";
 function App() {
   const [gameData, setGameData] = useState('none');
   const [userName, setUserName] = useState('Unknown');
-  const [topUser, setTopUser] = useState('');
+  // const [topUser, setTopUser] = useState('');
   const [timer, setTimer] = useState(0);
-  const [score, setScore] = useState(null);
+  const [score, setScore] = useState([]);
   const [yourScore, setYourScore] = useState(null);
   const [yourBestScore, setYourBestScore] = useState(null);
   const [homeGuess, setHomeGuess] = useState(0);
@@ -28,7 +28,7 @@ function App() {
     let currentDate = new Date();
     let startDate = new Date(currentDate.getFullYear(), 0, 1);
     let days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
-  
+
     let weekNumber = Math.ceil(days / 7);
     return (weekNumber - 35); // weeks into year will change based on when season starts
   }
@@ -66,8 +66,14 @@ function App() {
     setDisabled(true);
   }
 
+  const userNameChange = (e) => {
+    if (e.target.value.length < 12) {
+      setUserName(e.target.value)
+    }
+  }
+
   useEffect(() => {
-    if (score === null) {
+    if (score.length === 0) {
       setYourScore(null);
     }
   }, [score])
@@ -77,39 +83,42 @@ function App() {
       <Socket setTimer={setTimer}
         setGameData={setGameData}
         setScore={setScore}
-        setTopUser={setTopUser}
+        // setTopUser={setTopUser}
         setHomeGuess={setHomeGuess}
         setAwayGuess={setAwayGuess}
         setDisabled={setDisabled}
         setDataType={setDataType}
       />
-      {dataType === 'stale' && 
-      <div className='result-flag'>
-        No live games.  Play on games from week {getWeek()}
-      </div>}
+      {dataType === 'stale' &&
+        <div className='result-flag'>
+          No live games.  Play on games from week {getWeek()}
+        </div>}
       <h2 className='team-name'>Enter your Username: </h2>
-      <input className='username-input' value={userName} onChange={(e) => setUserName(e.target.value)} tabIndex='1'></input>
+      <input className='username-input' value={userName} onChange={userNameChange} tabIndex='1'></input>
       <div className="scoreboard-container">
         <div className='scoreboard-wrapper'>
-          {gameData && gameData !== 'none' && 
+          {gameData && gameData !== 'none' &&
             <TeamElement game={gameData} logo={awayLogo} homeAway={false} guess={awayGuess} setGuess={setAwayGuess} yourScore={yourScore} disabled={disabled} />
           }
           <div className='title-wrapper'>
             <TitleImage />
-            {gameData && gameData !== 'none' &&
+            {gameData && gameData !== 'none' ?
               <div>
                 <Timer updateTimer={timer} />
                 <TimeRemaining gameData={gameData} />
                 <button onClick={onClick} disabled={disabled} tabIndex='4' className='submit-button'>Submit Guesses</button>
+              </div> :
+              <div>
+                <h3>The next round will start soon</h3>
               </div>
-              }
+            }
           </div>
-          {gameData && gameData !== 'none' && 
+          {gameData && gameData !== 'none' &&
             <TeamElement game={gameData} logo={homeLogo} homeAway={true} guess={homeGuess} setGuess={setHomeGuess} yourScore={yourScore} disabled={disabled} />
           }
         </div>
       </div>
-      <Score score={score} topUser={topUser} yourScore={yourScore} yourBestScore={yourBestScore} />
+      <Score score={score} userName={userName} />
       <footer>Built by <a href="https://github.com/Scott-Andermann">Scott</a> - Powered by <a href="https://collegefootballdata.com/">CFBD</a></footer>
     </div>
   );

@@ -2,6 +2,7 @@
     width: 60%;
     margin: auto;
     display: flex;
+    flex-direction: column;
     background-color: #746F72;
     justify-content: space-around;
     /* border: 2px solid gray; */
@@ -11,4 +12,19 @@
 
 .score-header {
     margin-bottom: 1rem;
+}
+
+.score-table {
+    width: 100%;
+}
+
+.highlight {
+    background-color: #FFCE00;
+    color: black;
+}
+
+@media only screen and (max-width: 500px) {
+    .score-wrapper {
+        width: 100%;
+    }
 }

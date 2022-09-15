@@ -11,7 +11,7 @@ TODO:
 - User login  
 ✔️ Force single guess per user  
 ✔️ Websocket that pushes closest guess for each game  
-- Add off-day functionality - guess score of completed games  
+✔️ Add off-day functionality - guess score of completed games  
 ✔️ condense server to single websocket server  
   
 Future improvements:  
