@@ -3,8 +3,7 @@ import './TeamElement.css'
 
 const TeamElement = ({game, logo, homeAway, guess, setGuess, yourScore, disabled}) => {
 
-    const teamScore = homeAway ? game.homePoints : game.awayPoints;
-
+    const teamScore = homeAway ? game.homeTeam.points : game.awayTeam.points;
     const onChange = (e) => {
         if (e.target.value > 99) return
         setGuess(e.target.value);
@@ -13,10 +12,10 @@ const TeamElement = ({game, logo, homeAway, guess, setGuess, yourScore, disabled
     return (
         <div className='team-wrapper'>
             <div className='team-title'>
-            <h2 className='team-name'>{homeAway ? game.homeTeam : game.awayTeam}</h2>
+            <h2 className='team-name'>{homeAway ? game.homeTeam.name : game.awayTeam.name}</h2>
             </div>
             {logo !== "" && (
-                <img className='team-image' src={logo} alt={`${homeAway ? game.homeTeam : game.awayTeam} logo`} />
+                <img className='team-image' src={logo} alt={`${homeAway ? game.homeTeam.name : game.awayTeam.name} logo`} />
                 )}
                 <input className='score-input' type='number' value={guess} onChange={onChange} disabled={disabled} tabIndex='2'></input>
             {yourScore >= 0 && typeof(yourScore) == 'number' ? 

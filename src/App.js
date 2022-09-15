@@ -25,25 +25,25 @@ function App() {
 
   useEffect(() => {
     const getLogo = (school) => {
-      const team = logos.find((logo) => logo.School === school);
+      const team = logos.find((logo) => school.includes(logo.School));
       let url;
       try {
         url = team.TeamLogoUrl;
       } catch (e) {
         console.log('Error: ', e)
-        url = 'https://www.ncaa.org/images/2021/7/14/NCAA_Disk.jpg'
+        url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/117px-NCAA_logo.svg.png?20171117030529'
       }
       return url;
     };
     if (gameData !== 'none') {
-      setHomeLogo(getLogo(gameData.homeTeam));
-      setAwayLogo(getLogo(gameData.awayTeam));
+      setHomeLogo(getLogo(gameData.homeTeam.name));
+      setAwayLogo(getLogo(gameData.awayTeam.name));
     }
   }, [logos, gameData]);
 
   const onClick = () => {
-    let homeDiff = Math.abs(gameData.homePoints - homeGuess);
-    let awayDiff = Math.abs(gameData.awayPoints - awayGuess);
+    let homeDiff = Math.abs(gameData.homeTeam.points - homeGuess);
+    let awayDiff = Math.abs(gameData.awayTeam.points - awayGuess);
     let diff = homeDiff + awayDiff;
     if (diff < yourBestScore || yourBestScore === null) setYourBestScore(diff);
     sendScoreToServer({ userName: userName, score: diff })

@@ -1,11 +1,11 @@
 const webSocketServer = require("websocket").server;
 const http = require("http");
 const cfb = require('cfb.js')
-const axios = require("axios");
 const { env } = require("process");
-// const configKeys = require("./config/configKeys.json");
+// const configKeys = require("./config/configKeys.json"); // comment before deploying
 const config = require("./config/config.json")
 const dummyData = require('./dummyData.json')
+const buildJSON = require('./buildJSON')
 
 const webSocketServerPort = process.env.PORT || 8080;
 
@@ -13,8 +13,8 @@ let keyConfig;
 
 let develop = false;    
 if (webSocketServerPort == 8080){
-  // const key = process.env.KEY;
-  // keyConfig = configKeys[key];
+  // const key = process.env.KEY; // comment before deploying
+  // keyConfig = configKeys[key]; // comment before deploying
   develop = true;
 } else {
   keyConfig = {key: process.env.KEY}
@@ -33,7 +33,9 @@ const wsServer = new webSocketServer({
 const defaultClient = cfb.ApiClient.instance;
 
 const ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.apiKey = `Bearer ${keyConfig}`;
+ApiKeyAuth.apiKey = `Bearer ${keyConfig.key}`;
+
+console.log('API key: ', ApiKeyAuth);
 
 var api = new cfb.GamesApi();
 
@@ -50,9 +52,10 @@ const clients = {};
 var users = {};
 let time = 0;
 let gameIndex = 0;
-let gamesList = dummyData;
 let score = null;
 let topUser = '';
+let gamesList;
+let init = true;
 
 
 const generateUniqueId = () => {
@@ -69,26 +72,39 @@ const setGameIndex = () => {
 }
 
 const getFacts = async () => {
-
-  // uncomment when using live data and bugs are worked out for off days
   if (develop) {
-      try {
-          games = await api.getGames(year, opts);
-          result = games.filter(game => conferences.includes(game.homeConference))
-          return result;
-      } catch (e) {
-          console.log("Error: ", e);
+    try {
+      // check if games are being played if yes, hit /scoreboard endpoint
+      games = await api.getScoreboard({classification: 'fbs'});
+      currGames = games.filter(game => game.status !== 'scheduled');
+      // if no games are being played, get last weeks games from /games endpoint with correct week number
+      if (currGames.length === 0) {
+        games = await api.getGames(year, opts);
+        gameData = games.filter(game => conferences.includes(game.homeConference))
+        result = buildJSON.buildJSON(gameData)
+        return result;
       }
-  }
+      return currGames;
 
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  }
+  
   return dummyData;
 };
 
-// const pullData = async () => {gamesList = await getFacts()}
-// pullData();
+const getGames = async () => {
+  // console.log('updating from API')
+  gamesList = await getFacts();
+}
 
 // push time to update to clients
 setInterval(() => {
+  if (init) {
+    getGames();
+    init = false;
+  }
   Object.keys(clients).map((client) => {
     clients[client].send(JSON.stringify({type: 'timer', time: time}));
   })
@@ -101,7 +117,6 @@ setInterval(() => {
 // push new game to clients
 setInterval(() => {
   setGameIndex();
-  console.log(gamesList[gameIndex]);
   if (gamesList.length === 0) {
     Object.keys(clients).map((client) => {
       clients[client].send(JSON.stringify({type: 'gameData', game: []}));
@@ -117,7 +132,7 @@ setInterval(() => {
 
 // update game data via API endpoint
 setInterval(async () => {
-  console.log('updating from API')
+  // console.log('updating from API')
   gamesList = await getFacts();
 }, 300000)
 

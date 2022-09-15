@@ -41,7 +41,7 @@ function Timer({updateTimer}) {
         // console.log(updateTimer)
         window.requestAnimationFrame(timerAnimation)
         if (updateTimer >= 19 && timer > 10) {
-            console.log('starting timer')
+            // console.log('starting timer')
             done = false;
             startTime = undefined;
             setTimer(0);
