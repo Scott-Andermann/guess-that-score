@@ -15,7 +15,6 @@ function App() {
   const [timer, setTimer] = useState(0);
   const [score, setScore] = useState([]);
   const [yourScore, setYourScore] = useState(null);
-  const [yourBestScore, setYourBestScore] = useState(null);
   const [homeGuess, setHomeGuess] = useState(0);
   const [awayGuess, setAwayGuess] = useState(0);
   const [disabled, setDisabled] = useState(false);
@@ -63,7 +62,6 @@ function App() {
     let homeDiff = Math.abs(gameData.homeTeam.points - homeGuess);
     let awayDiff = Math.abs(gameData.awayTeam.points - awayGuess);
     let diff = homeDiff + awayDiff;
-    if (diff < yourBestScore || yourBestScore === null) setYourBestScore(diff);
     sendScoreToServer({ userName: userName, score: diff });
     setYourScore(diff);
     setDisabled(true);

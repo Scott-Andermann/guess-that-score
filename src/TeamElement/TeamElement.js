@@ -38,16 +38,16 @@ const TeamElement = ({
         disabled={disabled}
         tabIndex="2"
       ></input>
-      {yourScore >= 0 && typeof yourScore == "number" ? (
+      {yourScore !== null ? 
         <div className="score-actual-wrapper">
           <h3 className="score-actual">{teamScore}</h3>
           <p className={guess - teamScore === 0 ? "green" : "yellow"}>
             +{Math.abs(guess - teamScore)}
           </p>
         </div>
-      ) : (
+       : 
         <h3 className="score-actual">--</h3>
-      )}
+      }
     </div>
   );
 };
