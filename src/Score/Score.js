@@ -21,6 +21,7 @@ const Score = ({ score, userName, yourScore }) => {
           })
           .map((scoreElement, index) => (
             <tr
+            key={index}
             className={
               scoreElement.userName === userName &&
               scoreElement.score === yourScore
