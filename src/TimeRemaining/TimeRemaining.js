@@ -1,14 +1,14 @@
 import React from 'react';
 
-const clock = '00:00:00'
-const period = '2';
+// const clock = '00:00:00'
+// const period = '2';
 
 const TimeRemaining = ({gameData}) => {
 
     const formatTime = () => {
         if (gameData.clock === '00:00:00' && gameData.period === '2') return 'Half';
         let formattedTime = gameData.clock.slice(3);
-        if (formattedTime[0] == 0) formattedTime = formattedTime.slice(1);
+        if (formattedTime[0] === 0) formattedTime = formattedTime.slice(1);
 
 
         return formattedTime;
