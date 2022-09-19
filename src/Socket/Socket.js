@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const client = new W3CWebSocket('wss://guess-that-score.herokuapp.com');
 
 // const client = new W3CWebSocket('ws://localhost:8080');
 
-export const sendScoreToServer = ({score, userName}) => {
-    client.send(JSON.stringify({type: 'score', userName: userName, score: score}));
+export const sendScoreToServer = ({ score, userName }) => {
+    client.send(JSON.stringify({ type: 'score', userName: userName, score: score }));
 }
 
-const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled, setDataType}) => {
+const Socket = ({ setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled, setDataType }) => {
+    const [connected, setConnected] = useState(true);
 
     useEffect(() => {
         client.onopen = () => {
@@ -34,11 +35,19 @@ const Socket = ({setTimer, setGameData, setScore, setTopUser, setHomeGuess, setA
                 // setTopUser(parsed.userName);
                 setScore(parsed.score)
             }
+        };
+        client.onclose = () => {
+            setConnected(false);
         }
     }, [setTimer, setGameData, setScore, setTopUser, setHomeGuess, setAwayGuess, setDisabled, setDataType])
 
     return (
-        <></>
+        <>
+            {!connected && 
+            <div className='connection'>
+                <h1>Connection lost, please reload page</h1>
+            </div>}
+        </>
     )
 }
 

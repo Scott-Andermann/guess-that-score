@@ -159,6 +159,11 @@ setInterval(() => {
   time = 19;
   score = [];
   topUser = '';
+  gamesList.splice(gameIndex, 1);
+  // console.log(gamesList.length);
+  if (gamesList.length < 65) {
+    getGames();
+  }
 }, 21000)
 
 // update game data via API endpoint

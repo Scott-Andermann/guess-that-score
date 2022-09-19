@@ -22,7 +22,7 @@ function App() {
   const logos = dummyTeams;
   const [homeLogo, setHomeLogo] = useState("");
   const [awayLogo, setAwayLogo] = useState("");
-  const [dataType, setDataType] = useState("stale");
+  const [dataType, setDataType] = useState("none");
 
   const getWeek = () => {
     let currentDate = new Date();

@@ -12,25 +12,28 @@ const Score = ({ score, userName, yourScore }) => {
           <th>Username</th>
           <th>Score</th>
         </tr>
+        <tbody>
+
         {score.length > 0 &&
           score
-            .sort((a, b) => {
-              return a.score - b.score;
-            })
-            .map((scoreElement, index) => (
-              <tr
-                className={
-                  scoreElement.userName === userName &&
-                  scoreElement.score === yourScore
-                    ? "highlight"
-                    : ""
-                }
-              >
+          .sort((a, b) => {
+            return a.score - b.score;
+          })
+          .map((scoreElement, index) => (
+            <tr
+            className={
+              scoreElement.userName === userName &&
+              scoreElement.score === yourScore
+              ? "highlight"
+              : ""
+            }
+            >
                 <td>{index + 1}</td>
                 <td>{scoreElement.userName}</td>
                 <td>{scoreElement.score}</td>
               </tr>
             ))}
+            </tbody>
       </table>
     </div>
   );
